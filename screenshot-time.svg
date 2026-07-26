@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 280" width="820" height="280" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="8" y="8" width="804" height="264" rx="18" fill="#FFFFFF" stroke="#E7EBEF" stroke-width="1.5"/>
+  <text x="40" y="44" font-size="15" font-weight="700" letter-spacing="0.12em" fill="#2C4A6E">SEQUENCE · TIME</text>
+  <text x="40" y="66" font-size="13.5" fill="#6B7B7B">Give the steps a time and the rail becomes an axis — the spacing is the message.</text>
+
+  <g>
+    <line x1="52" y1="130" x2="768" y2="130" stroke="#E7EBEF" stroke-width="2" stroke-linecap="round"/>
+    <line x1="52" y1="130" x2="397" y2="130" stroke="#C3CDD7" stroke-width="2" stroke-linecap="round"/>
+
+    <circle cx="52"  cy="130" r="7" fill="#C3CDD7"/>
+    <circle cx="105" cy="130" r="7" fill="#C3CDD7"/>
+    <circle cx="211" cy="130" r="7" fill="#C3CDD7"/>
+    <circle cx="397" cy="130" r="10" fill="#2C4A6E"/>
+    <circle cx="768" cy="130" r="7" fill="#FFFFFF" stroke="#E7EBEF" stroke-width="2"/>
+
+    <text x="52"  y="106" font-size="13" font-weight="700" fill="#9AA6B2" text-anchor="middle">Day 1</text>
+    <text x="211" y="106" font-size="13" font-weight="700" fill="#9AA6B2" text-anchor="middle">Day 7</text>
+    <text x="768" y="106" font-size="13" font-weight="700" fill="#9AA6B2" text-anchor="middle">Day 28</text>
+    <text x="105" y="156" font-size="13" font-weight="700" fill="#9AA6B2" text-anchor="middle">Day 3</text>
+    <text x="397" y="156" font-size="13" font-weight="800" fill="#2C4A6E" text-anchor="middle">Day 14</text>
+  </g>
+
+  <text x="40" y="204" font-size="26" font-weight="800" fill="#0B1818">Mature biofilm</text>
+  <text x="40" y="234" font-size="16" fill="#22312f">Dense enough that antibiotics barely reach through it.</text>
+
+  <text x="40" y="262" font-size="11.5" font-weight="700" letter-spacing="0.08em" fill="#BDC7D1">DAY 1 TO DAY 3 IS NOTHING — DAY 14 TO DAY 28 IS HALF THE AXIS</text>
+</svg>

@@ -4,6 +4,10 @@
 
 Walk a procedure **one step at a time** in [reveal.js](https://revealjs.com) — or lay a course of events on a **real time axis**, where the distance between two points means something. Both come from the same markup.
 
+[![Screenshot](screenshot.svg)](https://florianloyns.github.io/reveal.js-sequence/demo.html)
+
+[![Screenshot: time axis](screenshot-time.svg)](https://florianloyns.github.io/reveal.js-sequence/demo.html)
+
 **[Live demo](https://florianloyns.github.io/reveal.js-sequence/demo.html)**
 
 ## Why
