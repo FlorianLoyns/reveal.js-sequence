@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sequence — Demo</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/white.css">
+<style>
+  .reveal .controls{ color:#2C4A6E !important }
+  .reveal h1,.reveal h2,.reveal h3{ color:#2C4A6E; text-transform:none }
+  .reveal section{ text-align:left }
+  .reveal .lead{ font-size:.5em; color:#666 }
+  .reveal code{ background:#EDF1F5; padding:.1em .3em; border-radius:4px; font-size:.8em }
+  .reveal .sequence{ font-size:.62em }
+</style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <section style="text-align:center">
+      <h2>Sequence</h2>
+      <p class="lead">A procedure <strong>one step at a time</strong> — or a course of events on a real time axis.</p>
+      <p class="lead" style="font-size:.38em;color:#999">Arrow keys step through it. The rail is tappable.</p>
+    </section>
+
+    <section>
+      <h3>Steps — the whole path stays visible</h3>
+      <div class="sequence" id="handover">
+        <div class="step">
+          <div class="t">Read the chart</div>
+          <div class="d">Take the record before you take the room.</div>
+          <div class="w">Whatever you miss here, you will ask about in front of the patient — and that costs their confidence, not your time.</div>
+        </div>
+        <div class="step">
+          <div class="t">Check the lines</div>
+          <div class="d">Follow every line from the bag to the body, in that order.</div>
+          <div class="w">Following the line the other way is how swapped infusions survive a handover.</div>
+        </div>
+        <div class="step">
+          <div class="t">Ask the patient</div>
+          <div class="d">One open question before the checklist.</div>
+          <div class="w">The answer often reorders everything you planned in the two steps above.</div>
+        </div>
+        <div class="step">
+          <div class="t">Sign off</div>
+          <div class="d">Countersign only what you have seen yourself.</div>
+          <div class="w">A signature is a statement about your own eyes, not about your colleague's.</div>
+        </div>
+      </div>
+      <p class="lead" style="font-size:.34em;margin-top:.8em">Tap the <code>…</code> for the reasoning.</p>
+    </section>
+
+    <section>
+      <h3>Reasoning printed from the start</h3>
+      <div class="sequence" data-why="open">
+        <div class="step">
+          <div class="t">Read the chart</div>
+          <div class="d">Take the record before you take the room.</div>
+          <div class="w">Whatever you miss here, you will ask about in front of the patient.</div>
+        </div>
+        <div class="step">
+          <div class="t">Check the lines</div>
+          <div class="d">Follow every line from the bag to the body, in that order.</div>
+          <div class="w">Following the line the other way is how swapped infusions survive a handover.</div>
+        </div>
+      </div>
+      <p class="lead" style="font-size:.34em;margin-top:.8em"><code>data-why="open"</code> — right for a slide that will be handed out.</p>
+    </section>
+
+    <section>
+      <h3>Time — the spacing is the message</h3>
+      <div class="sequence">
+        <div class="step" data-t="0"  data-cap="0 h"><div class="t">Insertion</div><div class="d">A first biofilm forms within hours.</div></div>
+        <div class="step" data-t="3"  data-cap="Day 3"><div class="t">Colonisation</div><div class="d">Bacteria travel upwards. No symptoms yet — which is the problem.</div></div>
+        <div class="step" data-t="7"  data-cap="Day 7"><div class="t">Bacteriuria</div><div class="d">Detectable in roughly one in four.</div></div>
+        <div class="step" data-t="14" data-cap="Day 14"><div class="t">Mature biofilm</div><div class="d">Dense enough that antibiotics barely reach through it.</div></div>
+        <div class="step" data-t="28" data-cap="Day 28"><div class="t">Fully colonised</div><div class="d">Removing it earlier is the only measure that still works.</div></div>
+      </div>
+      <p class="lead" style="font-size:.34em;margin-top:.8em">Day 0 to day 3 is nothing. Day 14 to day 28 is half the axis.</p>
+    </section>
+
+    <section>
+      <h3>One list, two uses</h3>
+      <p class="lead">Give the sequence an <code>id</code> and point an ordering question at it:</p>
+      <pre style="font-size:.36em"><code>&lt;div class="sequence" id="handover"&gt; … &lt;/div&gt;
+
+&lt;div class="quiz" data-type="order" data-seq="#handover"&gt;
+  &lt;div class="quiz-q"&gt;Put the steps in the right order.&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <p class="lead" style="font-size:.36em">Write the procedure once — teach it and examine it. Change a step and the question changes with it.</p>
+    </section>
+
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="plugin/sequence/sequence.js"></script>
+<script>
+  Reveal.initialize({ hash: true, plugins: [ RevealSequence ] });
+</script>
+</body>
+</html>

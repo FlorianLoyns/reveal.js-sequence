@@ -1,0 +1,14 @@
+{
+  "name": "reveal.js-sequence",
+  "version": "1.0.0",
+  "description": "Walk a procedure step by step, or a course of events along a real time axis — both from the same markup. Steps advance as native reveal.js fragments; the reasoning behind each step stays hidden until you want it.",
+  "keywords": ["reveal","reveal.js","reveal-plugin","plugin","steps","procedure","workflow","timeline","teaching","training","presentation"],
+  "homepage": "https://github.com/florianloyns/reveal.js-sequence",
+  "repository": { "type": "git", "url": "https://github.com/florianloyns/reveal.js-sequence.git" },
+  "main": "plugin/sequence/sequence.js",
+  "module": "plugin/sequence/sequence.esm.js",
+  "files": ["plugin", "README.md", "LICENSE"],
+  "peerDependencies": { "reveal.js": ">=4.2" },
+  "author": "Florian Loyns",
+  "license": "MIT"
+}
