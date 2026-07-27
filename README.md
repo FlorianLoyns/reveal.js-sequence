@@ -134,6 +134,10 @@ Deliberately quiet: no box, no coloured fill, no shadow. In a deck that uses col
 
 When printing and in the overview the whole sequence is laid out in full: a handout with one visible step would be worthless. Respects `prefers-reduced-motion`. Without JavaScript the steps are plain readable blocks, so nothing is lost.
 
+## Imprint
+
+Responsible: Florian Loyns — [imprint & privacy notice](https://florianloyns.com/Impressum/) (German)
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Built for [reveal.js](https://revealjs.com) by Hakim El Hattab.
