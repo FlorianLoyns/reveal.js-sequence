@@ -20,6 +20,8 @@ The second mode exists because some lists are not procedures but courses of even
 
 ## Installation
 
+**Requires** reveal.js 4.2 or newer. Tested with reveal.js 5.x.
+
 Copy the `sequence` folder into your reveal.js `plugin/` folder — or install from npm.
 
 ```console
