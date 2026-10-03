@@ -1,5 +1,5 @@
 /*!
- * reveal.js-sequence 1.0.0
+ * reveal.js-sequence 1.1.1
  * Walk a procedure step by step, or a course of events along a real time axis —
  * both from the same markup. Steps advance as native reveal fragments, so the
  * remote, the speaker view and the URL keep working. The reasoning behind each
@@ -12,8 +12,51 @@
 
 'use strict';
 
+  /* ---- Druck: überall gleich erkannt und gleich ausgegeben ----
+     reveal.js baut die Druckansicht mit ?print-pdf in der URL (oder view:'print'
+     in der Konfiguration) und setzt dann nur Klassen an <html>; @media print greift
+     erst im Druckdialog. Darum jede Druckregel zweimal: für den Druckdialog und
+     für die ?print-pdf-Ansicht – so sieht die Vorschau im Browser aus wie das PDF. */
+  function isPrintView(deck){
+    if (/(?:\?|&)print-pdf\b/i.test(window.location.search)) return true;
+    var c = deck && deck.getConfig ? deck.getConfig() : null;
+    return !!(c && c.view === 'print');
+  }
+  function printCSS(css){
+    var pdf = css.replace(/(^|\})([^{}]+)\{/g, function (m, vor, sel) {
+      return vor + sel.split(',').map(function (s) { return 'html.print-pdf ' + s.trim(); }).join(',') + '{';
+    });
+    return '@media print{' + css + '}' + pdf;
+  }
+
   function injectCSS(o){
     if (document.getElementById('sequence-css')) return;
+    /* Im Druck und in der Übersicht steht der ganze Ablauf da – ein Handout
+       mit nur einem sichtbaren Schritt wäre wertlos. Schriftgrößen, Farben und
+       Abstände aus der gemeinsamen Druckskala (--print-*) des Themes; ohne
+       Theme greifen die Werte hinter dem Komma. Ab fünf Schritten zweispaltig,
+       damit lange Abläufe nicht gequetscht werden. Die Regeln gelten für den
+       Druckdialog und für reveals ?print-pdf-Ansicht (Klasse an <html>). */
+    var printRules =
+      ".reveal .seq-rail,.reveal .seq-tl,.reveal .seq-stage{display:none}"
+    + ".reveal .sequence{counter-reset:seqp;display:block}"
+    + ".reveal .sequence.seq-2col{column-count:2;column-gap:44px}"
+    + ".reveal .sequence .step{display:block !important;position:relative;counter-increment:seqp;"
+      + "break-inside:avoid;-webkit-column-break-inside:avoid;margin:0 0 var(--print-gap,14px);padding-left:42px;"
+      + "color:var(--print-text,#22312f)}"
+    + ".reveal .sequence .step::before{content:counter(seqp);position:absolute;left:0;top:1px;width:28px;height:28px;"
+      + "border-radius:50%;background:var(--print-accent," + o.accent + ");color:#fff;font-size:var(--print-label,14px);"
+      + "font-weight:800;display:flex;align-items:center;justify-content:center;"
+      + "-webkit-print-color-adjust:exact;print-color-adjust:exact}"
+      /* Verlauf (Zeitachse): statt der Nummer steht die Zeitmarke als Kürzel */
+    + ".reveal .sequence.seq-time .step{padding-left:0}"
+    + ".reveal .sequence.seq-time .step::before{content:attr(data-seq-cap);position:static;display:inline-block;width:auto;height:auto;"
+      + "border-radius:6px;padding:2px 8px;margin:0 0 4px}"
+    + ".reveal .sequence .step .t,.reveal .sequence .step h3,.reveal .sequence .step h4,.reveal .sequence .step h5"
+      + "{font-size:var(--print-body,19px);font-weight:800;line-height:1.3;margin:0 0 2px;color:var(--print-ink,#0B1818);text-transform:none}"
+    + ".reveal .sequence .step .d{font-size:var(--print-meta,16px);line-height:var(--print-lh,1.4);color:var(--print-text,#22312f)}"
+    + ".reveal .sequence .step .w,.reveal .sequence .step .why{font-size:var(--print-meta,16px);line-height:var(--print-lh,1.4);"
+      + "color:var(--print-muted,#5A6A75);margin-top:2px}";
     var css =
       /* Der Ablauf fuellt den Folienkoerper, damit die Schiene oben sitzt
          und nicht in einem mittig zentrierten Block schwebt. */
@@ -54,10 +97,7 @@
     + ".reveal .seq-f{position:absolute;width:0;height:0;overflow:hidden;opacity:0 !important;visibility:hidden !important}"
       /* Im Druck und in der Übersicht steht der ganze Ablauf da – ein Handout
          mit nur einem sichtbaren Schritt wäre wertlos. */
-    + "@media print{.reveal .seq-rail,.reveal .seq-tl,.reveal .seq-stage{display:none}"
-      + ".reveal .sequence .step{display:block !important;margin:0 0 14px;padding-left:14px;border-left:2px solid " + o.line + "}"
-      + ".reveal .sequence .step .t{font-size:20px;font-weight:800}"
-      + ".reveal .sequence .step .d{font-size:17px}.reveal .sequence .step .w{font-size:15px;color:#5A6A75}}"
+    + printCSS(printRules)
     + "@media (prefers-reduced-motion:reduce){.reveal .seq-dot,.reveal .seq-pt{transition:none}}";
     var s = document.createElement('style');
     s.id = 'sequence-css'; s.textContent = css;
@@ -89,6 +129,12 @@
     };
   }
 
+  /* "Schritt 3 · …", "3. …", "3) …" am Titelanfang entfernen – in der
+     Reihenfolge-Frage würde die Nummer sonst die Lösung verraten. */
+  function ohneNummer(t){
+    return String(t).replace(/^\s*(?:Schritt\s*)?\d+\s*(?:·|\.|\)|:|–|-)\s*/i, '');
+  }
+
   var Plugin = {
     id: 'sequence',
 
@@ -113,7 +159,13 @@
         var timeMode = steps.every(function(s){ return s.t !== null; });
         var why = host.getAttribute('data-why') || o.why;
 
-        [].forEach.call(host.querySelectorAll(':scope > .step'), function(el){ el.style.display = 'none'; });
+        [].forEach.call(host.querySelectorAll(':scope > .step'), function(el, i){
+          el.style.display = 'none';
+          if (timeMode) el.setAttribute('data-seq-cap', steps[i].cap || '');
+        });
+        /* nur für den Ausdruck: lange Abläufe zweispaltig, Verläufe mit Zeitmarke */
+        if (steps.length >= 5) host.classList.add('seq-2col');
+        if (timeMode) host.classList.add('seq-time');
 
         var head = d.createElement('div');
         head.className = timeMode ? 'seq-tl' : 'seq-rail';
@@ -228,7 +280,7 @@
             var b = d.createElement('button');
             b.className = 'quiz-opt';
             b.setAttribute('data-order', i + 1);
-            b.innerHTML = s.title || s.desc;
+            b.innerHTML = ohneNummer(s.title || s.desc);
             box.appendChild(b);
           });
           q.appendChild(box);
@@ -259,6 +311,5 @@
       Plugin.rebuild = run;
     }
   };
-
 
 export default Plugin;
